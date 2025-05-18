@@ -7,10 +7,10 @@ void dma_config()
 {
 	/* Enable clock acess to the dma*/
 	/* Disable dma stream*/
-	/* Wait until stream í disabled*/
-	/**/
+	/* Wait until stream is disabled*/
+	/* Disable direct mode*/
+	/* Set DMA FIFO threshold*/
 	/* Enable DMA interrupt in NVIC*/
-
 }
 
 

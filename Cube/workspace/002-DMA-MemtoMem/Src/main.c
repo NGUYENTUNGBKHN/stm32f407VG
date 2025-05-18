@@ -17,14 +17,15 @@
  */
 
 #include <stdint.h>
-
+#include "stm32f4xx.h"
 
 
 int main(void)
 {
     /* Loop forever */
+	printf("Hello DMA MemToMem\n");
 	while(1)
 	{
-		printf("xin chao!!!\n");
+
 	}
 }

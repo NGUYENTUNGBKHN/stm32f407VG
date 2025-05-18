@@ -1,7 +1,8 @@
 # This is a template makefile for building projects with nRF52840
 TARGET_NAME:=helloworld
 BUILD_DIR:=_build
-MAKE_COMMON:=../Common # Makefile library
+# Makefile library
+MAKE_COMMON:=../Common
 
 $(info MAKE_COMMON = $(MAKE_COMMON))
 

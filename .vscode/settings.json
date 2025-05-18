@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "nrf52840.h": "c",
-        "nrf52840_bitfields.h": "c"
+        "nrf52840_bitfields.h": "c",
+        "stdint.h": "c"
     }
 }

@@ -17,15 +17,50 @@
  */
 
 #include <stdint.h>
+#include "stdio.h"
 #include "stm32f4xx.h"
+#include "dma.h"
 
+#define BUFFER_SIZE 5
+
+uint16_t sensor_data_arr[BUFFER_SIZE] = {892, 731, 1234, 90, 23};
+uint16_t temp_data_arr[BUFFER_SIZE];
+
+volatile uint8_t g_transfer_cmplt;
 
 int main(void)
 {
+	g_transfer_cmplt = 0;
     /* Loop forever */
 	printf("Hello DMA MemToMem\n");
+	dma_config();
+	dma_transfer_start((uint32_t)sensor_data_arr, (uint32_t)temp_data_arr, BUFFER_SIZE);
+	while(!g_transfer_cmplt){}
+	for (int i = 0; i < BUFFER_SIZE; i++)
+	{
+		printf("temp buffer[%d] = %d\n", i, temp_data_arr[i]);
+	}
+
 	while(1)
 	{
 
+	}
+}
+
+void DMA2_Stream0_IRQHandler()
+{
+	/* Check if transfer complete interrupt occured */
+	if((DMA2->LISR) & LISR_TCIF0)
+	{
+		g_transfer_cmplt = 1;
+		/* Clear flag*/
+		DMA2->LIFCR |= LIFCR_CTCIF0;
+	}
+	/* Check if transfer complete interrupt occured */
+	if((DMA2->LISR) & LISR_TEIF0)
+	{
+//		g_transfer_cmplt = 0;
+			/* Clear flag*/
+		DMA2->LIFCR |= LIFCR_CTEIF0;
 	}
 }

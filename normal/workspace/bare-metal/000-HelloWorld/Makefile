@@ -4,7 +4,7 @@ BUILD_DIR:=_build
 # Makefile library
 MAKE_COMMON:=../Common
 
-$(info MAKE_COMMON = $(MAKE_COMMON))
+# $(info MAKE_COMMON = $(MAKE_COMMON))
 
 # This is the root project directory and the core directory
 ROOT_PROJ:=./
@@ -40,8 +40,6 @@ LDFLAGS+=-T$(LINKER_SCRIPT) -mthumb -mabi=aapcs
 
 SRC_EXCLUDE=\
 	template_startup.s\
-	syscalls.c\
-	sysmem.c\
 
 SRC_INCLUDE+=$(wildcard *.c)
 SRC_INCLUDE+=$(wildcard *.s)
@@ -70,12 +68,15 @@ $(foreach target, $(TARGET_NAME), $(call define_target, $(target)))
 help:
 	@echo  help
 
-# Flash target
+# # # Flash target
+# flash: default
+# 	Jlink.exe -if swd -device nRF52840_xxAA -speed 4000 -CommanderScript CommanderScript/build_windows.jlink
+
+# # Erase target
+# erase:
+# 	Jlink.exe -if swd -device nRF52840_xxAA -speed 4000 -CommanderScript CommanderScript/erase_windows.jlink
 flash: default
-	Jlink.exe -if swd -device nRF52840_xxAA -speed 4000 -CommanderScript CommanderScript/build_windows.jlink
+	STM32_Programmer_CLI.exe -c port=SWD -w $(BUILD_DIR)/$(TARGET_NAME).bin 0x08000000 -v -rst
 
-# Erase target
-erase:
-	Jlink.exe -if swd -device nRF52840_xxAA -speed 4000 -CommanderScript CommanderScript/erase_windows.jlink
-
-
+erase: default
+	STM32_Programmer_CLI.exe -c port=SWD -e all

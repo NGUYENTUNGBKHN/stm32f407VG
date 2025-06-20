@@ -1,5 +1,5 @@
 # This is a template makefile for building projects with nRF52840
-TARGET_NAME:=helloworld
+TARGET_NAME:=dma_mem
 BUILD_DIR:=_build
 # Makefile library
 MAKE_COMMON:=../Common

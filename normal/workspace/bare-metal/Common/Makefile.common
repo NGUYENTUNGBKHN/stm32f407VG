@@ -204,7 +204,7 @@ endef
 
 %.out:
 	$(info Link target : $@)
-	$(NO_ECHO)$(CC) $(LDFLAGS) $(LIBS) $^ -Wl,-Map=$(@:.out=.map) -o $@
+	$(NO_ECHO)$(CC) $(LDFLAGS) $^ $(LIBS) -Wl,-Map=$(@:.out=.map) -o $@
 	$(NO_ECHO)$(SIZE) $@
 
 %.bin: %.out

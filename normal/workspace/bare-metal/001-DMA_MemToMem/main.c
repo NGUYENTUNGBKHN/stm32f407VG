@@ -8,6 +8,7 @@ int main()
     {
         /* code */
         printf("hello_world\n");
+        for(volatile long i = 0; i < 100000; i++);
     }
 }
 

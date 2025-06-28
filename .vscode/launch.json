@@ -76,6 +76,82 @@
                     }
                 ]
             }
+        },
+        {
+            "name": "Test OS",
+            "type": "cortex-debug",
+            "request": "launch", // Or "attach" if you want to connect to an already running target
+            "servertype": "openocd",
+
+            // --- Path to your compiled ELF file ---
+            // This is the executable containing your code and debug symbols.
+            // Adjust this path based on your build system's output.
+            "executable": "${workspaceFolder}/normal/workspace/test_os/_build/test.out",
+
+            // --- Path to OpenOCD executable ---
+            // IMPORTANT: This needs to point to the actual openocd.exe (Windows)
+            // or openocd (Linux/macOS) binary.
+            // Example for xPack OpenOCD:
+            "serverpath": "F:/openocd-v0.12.0-i686-w64-mingw32/bin/openocd.exe", // macOS/Linux example
+            // "serverpath": "C:\\xpack\\openocd-x.x.x-y\\bin\\openocd.exe", // Windows example
+            // If using STM32CubeIDE's OpenOCD, it's often deep inside its plugins folder.
+
+            // --- OpenOCD Configuration Files (This is your "file config"!) ---
+            // These are the .cfg files OpenOCD needs.
+            // Use relative paths if your 'openocd.exe/openocd' is in a standard location
+            // with access to its 'scripts' folder, or provide absolute paths.
+            "configFiles": [
+                //"interface/stlink.cfg",         // Interface config for ST-Link
+                //"target/stm32f4x.cfg",           // Target config for your specific MCU (e.g., STM32F4)
+                // OR, if you have a board file:
+                "${workspaceFolder}/normal/workspace/openocd/itm.cfg"
+            ],
+
+            // --- Optional but highly recommended: SVD File for Peripheral View ---
+            // Download the SVD file for your specific microcontroller (e.g., from ST's website).
+            // Place it in your project or a common SVDs folder.
+            "svdFile": "${workspaceFolder}/stm32f407.svd", // Example for STM32F407
+
+            // --- Debugging specific settings ---
+            "device": "STM32F407VG", // Your specific device name (often needed for Flash programming)
+            "cwd": "${workspaceFolder}", // Current working directory for the debugger
+
+            // Commands to execute after the GDB server (OpenOCD) starts and connects to the target.
+            // Common commands include flashing, resetting, and halting the CPU.
+            "postOpenCommands": [
+                "monitor halt" // Halt the CPU after connecting
+            ],
+            // Commands to execute after a reset. Useful for flashing the firmware.
+            "postRestartCommands": [
+                "load",       // Load the executable onto the target (flashes it)
+                "monitor reset and halt", // Ensure CPU is halted after flash
+                "break main"  // Set a breakpoint at the main function
+            ],
+
+            // Behaviour on launch
+            "runToEntryPoint": "main", // Start execution from the 'main' function after loading
+            "showDevDebugOutput": "none", // "full" for verbose Cortex-Debug output
+            // "preLaunchTask": "build", // Assumes you have a build task named "build"
+            "internalConsoleOptions": "openOnSessionStart",
+            // --- ITM Specific Configuration ---
+            "swoConfig": {
+                "enabled": true,
+                "cpuFrequency": 16000000, // **CRITICAL: Your MCU's core clock frequency in Hz**
+                                          // Must match what your firmware configures and OpenOCD expects.
+                "swoFrequency": 2000000,  // **CRITICAL: Your desired SWO baud rate in Hz**
+                                          // Must be a divisor of cpuFrequency (e.g., 168MHz / 2MHz = 84)
+                "source": "socket",        // Data comes directly from the debug probe
+                "itmPort": 0,             // The ITM port you're using (typically 0 for printf)
+                "logFile": null,          // Optional: path to a file to log ITM output to
+                "logLimit": 50000,        // Max lines to log before wrapping
+                "decoders": [
+                    {
+                        "label": "ITM Output",
+                        "type": "console", // Displays text in the "Cortex-Debug (SWO)" output channel
+                        "port": 0          // Link to ITM port 0
+                    }
+                ]
+            }
         }
     ]
 }

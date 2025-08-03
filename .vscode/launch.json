@@ -1,7 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
-        {
+        {           // 
             "name": "Cortex-Debug (ST-Link/OpenOCD)",
             "type": "cortex-debug",
             "request": "launch", // Or "attach" if you want to connect to an already running target
@@ -51,7 +51,7 @@
                 ]
             }
         },
-        {
+        {           // Test OS
             "name": "Test OS",
             "type": "cortex-debug",
             "request": "launch", // Or "attach" if you want to connect to an already running target
@@ -99,12 +99,60 @@
                 ]
             }
         },
-        {
+        {           // 00-helloWorld
             "name": "Debug 00-helloWorld",
             "type": "cortex-debug",
             "request": "launch", // Or "attach" if you want to connect to an already running target
             "servertype": "openocd",
             "executable": "${workspaceFolder}/normal/oskernel/00-helloWorld/_build/helloworld.out",
+            "serverpath": "F:/openocd-v0.12.0-i686-w64-mingw32/bin/openocd.exe", // macOS/Linux example
+            "configFiles": [
+                //"interface/stlink.cfg",         // Interface config for ST-Link
+                //"target/stm32f4x.cfg",           // Target config for your specific MCU (e.g., STM32F4)
+                // OR, if you have a board file:
+                "${workspaceFolder}/normal/workspace/openocd/itm.cfg"
+            ],
+            "svdFile": "${workspaceFolder}/stm32f407.svd", // Example for STM32F407
+            "device": "STM32F407VG", // Your specific device name (often needed for Flash programming)
+            "cwd": "${workspaceFolder}", // Current working directory for the debugger
+            "postOpenCommands": [
+                "monitor halt" // Halt the CPU after connecting
+            ],
+            "postRestartCommands": [
+                "load",       // Load the executable onto the target (flashes it)
+                "monitor reset and halt", // Ensure CPU is halted after flash
+                "break main"  // Set a breakpoint at the main function
+            ],
+            "runToEntryPoint": "main", // Start execution from the 'main' function after loading
+            "showDevDebugOutput": "none", // "full" for verbose Cortex-Debug output
+            // "preLaunchTask": "build", // Assumes you have a build task named "build"
+            "internalConsoleOptions": "openOnSessionStart",
+            // --- ITM Specific Configuration ---
+            "swoConfig": {
+                "enabled": true,
+                "cpuFrequency": 16000000, // **CRITICAL: Your MCU's core clock frequency in Hz**
+                                          // Must match what your firmware configures and OpenOCD expects.
+                "swoFrequency": 2000000,  // **CRITICAL: Your desired SWO baud rate in Hz**
+                                          // Must be a divisor of cpuFrequency (e.g., 168MHz / 2MHz = 84)
+                "source": "socket",        // Data comes directly from the debug probe
+                "itmPort": 0,             // The ITM port you're using (typically 0 for printf)
+                "logFile": null,          // Optional: path to a file to log ITM output to
+                "logLimit": 50000,        // Max lines to log before wrapping
+                "decoders": [
+                    {
+                        "label": "ITM Output",
+                        "type": "console", // Displays text in the "Cortex-Debug (SWO)" output channel
+                        "port": 0          // Link to ITM port 0
+                    }
+                ]
+            }
+        },
+        {           // 001-DMA_MemToMem
+            "name": "Debug 001-DMA_MemToMem",
+            "type": "cortex-debug",
+            "request": "launch", // Or "attach" if you want to connect to an already running target
+            "servertype": "openocd",
+            "executable": "${workspaceFolder}/normal/workspace/bare-metal/001-DMA_MemToMem/_build/dma_mem.out",
             "serverpath": "F:/openocd-v0.12.0-i686-w64-mingw32/bin/openocd.exe", // macOS/Linux example
             "configFiles": [
                 //"interface/stlink.cfg",         // Interface config for ST-Link

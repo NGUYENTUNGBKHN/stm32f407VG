@@ -12,6 +12,7 @@ ROOT_PROJ:=./
 # CORE_DIR:=$(ROOT_PROJ)/../Core/board
 # CMSIS_DIR:=$(ROOT_PROJ)/../Core/cmsis/inc
 # EXTERNAL_DIR:=$(ROOT_PROJ)/../external
+STM32_SDK:=./../sdk
 
 # This is the out file rule
 $(BUILD_DIR)/$(TARGET_NAME).out: \
@@ -39,7 +40,9 @@ LDFLAGS+=-T$(LINKER_SCRIPT) -mthumb -mabi=aapcs
 # 	$(ROOT_PROJ)/boot_startup.c\
 
 SRC_EXCLUDE=\
-	template_startup.s\
+	startup_stm32f407vgtx.s\
+	# startup.c\
+	# startup_stm32f407vgtx.s\
 
 SRC_INCLUDE+=$(wildcard *.c)
 SRC_INCLUDE+=$(wildcard *.s)
@@ -48,6 +51,9 @@ SRC_INCLUDE+=$(wildcard *.s)
 SRC_FILES:=$(filter-out $(SRC_EXCLUDE), $(SRC_INCLUDE))
 
 INC_FOLDERS=\
+	$(STM32_SDK)/Include\
+	$(STM32_SDK)/Device/ST/STM32F4xx/Include\
+
 
 LIBS+=
 # LIBS+=-lc -lm

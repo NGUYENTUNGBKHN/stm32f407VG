@@ -13,6 +13,7 @@ ROOT_PROJ:=./
 # CMSIS_DIR:=$(ROOT_PROJ)/../Core/cmsis/inc
 # EXTERNAL_DIR:=$(ROOT_PROJ)/../external
 STM32_SDK:=./../sdk
+PROJ_DIR:=./
 
 # This is the out file rule
 $(BUILD_DIR)/$(TARGET_NAME).out: \
@@ -51,8 +52,11 @@ SRC_INCLUDE+=$(wildcard *.s)
 SRC_FILES:=$(filter-out $(SRC_EXCLUDE), $(SRC_INCLUDE))
 
 INC_FOLDERS=\
-	$(STM32_SDK)/Include\
-	$(STM32_SDK)/Device/ST/STM32F4xx/Include\
+	$(PROJ_DIR)\
+	$(PROJ_DIR)/../Common\
+	$(STM32_SDK)/Core/Include\
+	$(STM32_SDK)/Driver/hal/Inc\
+	$(STM32_SDK)/Device/Include\
 
 
 LIBS+=

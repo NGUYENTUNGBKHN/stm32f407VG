@@ -39,7 +39,7 @@
 int boot_main()
 {
 
-    
+    TRACE_LOG("Bootloader\n");
 
     while (1)
     {

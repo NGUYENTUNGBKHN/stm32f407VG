@@ -16,6 +16,10 @@ extern "C"
 #endif
 
 /* CODE */
+#include "stdint.h"
+#include "stdio.h"
+#include "common.h"
+#include "memory_map.h"
 
 
 #ifdef __cplusplus

@@ -8,7 +8,8 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "STM32F407xx"
             ],
             "compilerPath": "D:\\Toolchain_2\\bin\\arm-none-eabi-gcc",
             "cStandard": "c99",

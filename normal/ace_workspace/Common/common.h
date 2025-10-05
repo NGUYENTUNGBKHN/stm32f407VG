@@ -15,11 +15,14 @@ extern "C"
 {
 #endif
 
+#include <stdio.h>
+#include "stm32f407xx.h"
+
 /* CODE */
 #define DEBUG
 
 #if defined(DEBUG)
-#define TRACE_LOG(format, ...)          printf("%s(%d) : " format, __FUNCTION__,  __LINE__, ##__VA_ARGS__)
+#define TRACE_INFO(format, ...)          printf("%s(%d) : " format, __FUNCTION__,  __LINE__, ##__VA_ARGS__)
 #define ERROR(format, ...)              printf("%s(%d) : " format, __FUNCTION__,  __LINE__, ##__VA_ARGS__)
 #else
 #define TRACE_LOG(format, ...) 

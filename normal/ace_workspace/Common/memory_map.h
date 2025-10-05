@@ -15,6 +15,10 @@ extern "C"
 #endif
 
 /* CODE */
+#define APP_START_ADDRESS   0x08040000
+#define APP_SIZE            0x3FFFF     
+
+
 
 #ifdef __cplusplus
 }

@@ -25,6 +25,26 @@
     "files.associations": {
         "nrf52840.h": "c",
         "nrf52840_bitfields.h": "c",
-        "stdint.h": "c"
-    }
+        "stdint.h": "c",
+        "boot_main.h": "c",
+        "bootloader.h": "c",
+        "common.h": "c",
+        "random": "c",
+        "boot_it.h": "c",
+        "stm32f4xx_hal_conf.h": "c",
+        "stm32f4xx_hal.h": "c",
+        "main.h": "c",
+        "system_stm32f4xx.h": "c",
+        "lis3dsh.h": "c",
+        "stm32f4xx_hal_def.h": "c",
+        "stm32f4xx.h": "c",
+        "stm32_hal_legacy.h": "c",
+        "stm32f407xx.h": "c",
+        "stm32f4xx_hal_exti.h": "c",
+        "stm32f4xx_hal_spi.h": "c",
+        "disco_bsp.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c"
+    },
+    "cortex-debug.variableUseNaturalFormat": false
 }

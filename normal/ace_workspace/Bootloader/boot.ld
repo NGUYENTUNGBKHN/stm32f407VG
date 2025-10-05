@@ -45,9 +45,10 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 /* Memories definition */
 MEMORY
 {
-  	CCMRAM    (xrw)    : ORIGIN = 0x10000000,   LENGTH = 64K
-  	RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 128K
-  	FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 1024K
+  	CCMRAM		(xrw)   : ORIGIN = 0x10000000,	LENGTH = 64K
+  	RAM			(xrw)   : ORIGIN = 0x20000000,	LENGTH = 64K
+  	FLASH		(rx)	: ORIGIN = 0x08000000,  LENGTH = 32K
+	DWL_FLASH 	(rx)	: ORIGIN = 0x08008000,	LENGTH = 32K
 }
 
 /* Sections */
@@ -123,6 +124,11 @@ SECTIONS
   	  	. = ALIGN(4);
   	  	_eccmram = .;       /* create a global symbol at ccmram end */
   	} >CCMRAM AT> FLASH
+
+	.entry_dwl 0x08008000 :
+	{
+		KEEP(*(.entry_dwl))
+	} >DWL_FLASH
 
   	/* Uninitialized data section into "RAM" Ram type memory */
   	. = ALIGN(4);

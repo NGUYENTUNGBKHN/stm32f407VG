@@ -12,6 +12,7 @@
 **                                INCLUDES
 *******************************************************************************/
 #include <stdint.h>
+#include "system_stm32f4xx.h"
 /*******************************************************************************
 **                       INTERNAL MACRO DEFINITIONS
 *******************************************************************************/
@@ -56,7 +57,7 @@ void Reset_Handler()
     volatile uint32_t *data = &_sidata;
     volatile uint32_t *bss_start = &_sbss;
     volatile uint32_t *bss_end = &_ebss;
-
+    SystemInit();
     while (start < end)
     {
         /* code */
@@ -86,15 +87,15 @@ void default_func()
     
 }
 
-void NMI_Handler(void) __attribute((weak, alias("default_func")));
-void HardFault_Handler(void) __attribute((weak, alias("default_func")));
-void MemManage_Handler(void) __attribute((weak, alias("default_func")));
-void BusFault_Handler(void) __attribute((weak, alias("default_func")));
-void UsageFault_Handler(void) __attribute((weak, alias("default_func")));
-void SVC_Handler(void) __attribute((weak, alias("default_func")));
-void DebugMon_Handler(void) __attribute((weak, alias("default_func")));
-void PendSV_Handler(void) __attribute((weak, alias("default_func")));
-void SysTick_Handler(void) __attribute((weak, alias("default_func")));
+void NMI_IRQHandler(void) __attribute((weak, alias("default_func")));
+void HardFault_IRQHandler(void) __attribute((weak, alias("default_func")));
+void MemManage_IRQHandler(void) __attribute((weak, alias("default_func")));
+void BusFault_IRQHandler(void) __attribute((weak, alias("default_func")));
+void UsageFault_IRQHandler(void) __attribute((weak, alias("default_func")));
+void SVC_IRQHandler(void) __attribute((weak, alias("default_func")));
+void DebugMonitor_IRQHandler(void) __attribute((weak, alias("default_func")));
+void PendSV_IRQHandler(void) __attribute((weak, alias("default_func")));
+void SysTick_IRQHandler(void) __attribute((weak, alias("default_func")));
 void WWDG_IRQHandler (void) __attribute((weak, alias("default_func")));            
 void PVD_IRQHandler (void) __attribute((weak, alias("default_func")));             
 void TAMP_STAMP_IRQHandler  (void) __attribute((weak, alias("default_func")));     
@@ -183,20 +184,20 @@ __attribute((section(".isr_vector")))
 uint32_t *_isr_vector[] = {
     (uint32_t*) &_estack,
     (uint32_t*) Reset_Handler,
-    (uint32_t*) NMI_Handler,
-    (uint32_t*) HardFault_Handler,
-    (uint32_t*) MemManage_Handler,
-    (uint32_t*) BusFault_Handler,
-    (uint32_t*) UsageFault_Handler,
+    (uint32_t*) NMI_IRQHandler,
+    (uint32_t*) HardFault_IRQHandler,
+    (uint32_t*) MemManage_IRQHandler,
+    (uint32_t*) BusFault_IRQHandler,
+    (uint32_t*) UsageFault_IRQHandler,
     (uint32_t*) 0,
     (uint32_t*) 0,
     (uint32_t*) 0,
     (uint32_t*) 0,
-    (uint32_t*) SVC_Handler,
-    (uint32_t*) DebugMon_Handler,
+    (uint32_t*) SVC_IRQHandler,
+    (uint32_t*) DebugMonitor_IRQHandler,
     (uint32_t*) 0,
-    (uint32_t*) PendSV_Handler,
-    (uint32_t*) SysTick_Handler,
+    (uint32_t*) PendSV_IRQHandler,
+    (uint32_t*) SysTick_IRQHandler,
     (uint32_t*) WWDG_IRQHandler ,             			/* Window Watchdog interrupt                                          */
     (uint32_t*) PVD_IRQHandler ,              			/* PVD through EXTI line detection interrupt                          */
     (uint32_t*) TAMP_STAMP_IRQHandler  ,      			/* Tamper and TimeStamp interrupts through the EXTI line              */

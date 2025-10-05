@@ -12,8 +12,9 @@ ROOT_PROJ:=./
 # CORE_DIR:=$(ROOT_PROJ)/../Core/board
 # CMSIS_DIR:=$(ROOT_PROJ)/../Core/cmsis/inc
 # EXTERNAL_DIR:=$(ROOT_PROJ)/../external
-STM32_SDK:=./../sdk
-PROJ_DIR:=./
+STM32_SDK:=$(ROOT_PROJ)/../SDK
+BOOT_DIR:=$(ROOT_PROJ)/boot_process
+COMMON_DIR:=$(ROOT_PROJ)/../Common
 
 # This is the out file rule
 $(BUILD_DIR)/$(TARGET_NAME).out: \
@@ -27,6 +28,7 @@ CCFLAGS+=$(CPU) $(FPU) $(OPT)
 CCFLAGS+=-ffunction-sections -fdata-sections -fno-strict-aliasing
 CCFLAGS+=-fno-builtin -fshort-enums
 CCFLAGS+=-Wall -Wno-unused-variable
+CCFLAGS+=-DSTM32F407xx
 
 ASMFLAG+=$(CPU) $(FPU) $(OPT)
 
@@ -46,17 +48,28 @@ SRC_EXCLUDE=\
 	# startup_stm32f407vgtx.s\
 
 SRC_INCLUDE+=$(wildcard *.c)
+SRC_INCLUDE+=$(wildcard $(BOOT_DIR)/*.c)
+SRC_INCLUDE+=$(wildcard $(BOOT_DIR)/operation/*.c)
+SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Device/Src/*.c)
+SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Driver/hal/Src/stm32f4xx_hal.c)
+SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Driver/hal/Src/stm32f4xx_hal_cortex.c)
+SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Driver/hal/Src/stm32f4xx_hal_rcc.c)
+SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Driver/hal/Src/stm32f4xx_hal_rcc_ex.c)
+SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Driver/hal/Src/stm32f4xx_hal_pwr.c)
+SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Driver/hal/Src/stm32f4xx_hal_pwr_ex.c)
 SRC_INCLUDE+=$(wildcard *.s)
 # SRC_INCLUDE+=$(wildcard $(EXTERNAL_DIR)/segger_rtt/*.c)
 # SRC_FILES+=$(wildcard $(OSKERNEL_DIR)/*.s)
 SRC_FILES:=$(filter-out $(SRC_EXCLUDE), $(SRC_INCLUDE))
 
 INC_FOLDERS=\
-	$(PROJ_DIR)\
-	$(PROJ_DIR)/../Common\
+	$(COMMON_DIR)\
 	$(STM32_SDK)/Core/Include\
 	$(STM32_SDK)/Driver/hal/Inc\
 	$(STM32_SDK)/Device/Include\
+	$(STM32_SDK)/Driver/hal\
+	$(BOOT_DIR)/operation\
+	$(BOOT_DIR)\
 
 
 LIBS+=

@@ -14,7 +14,14 @@
 /*******************************************************************************
 **                       INTERNAL MACRO DEFINITIONS
 *******************************************************************************/
+#define LCD_RESX_LOW()				    REG_CLR_BIT(LCD_RESX_PORT->ODR, LCD_RESX_PIN)
+#define LCD_RESX_HIGH()				    REG_SET_BIT(LCD_RESX_PORT->ODR, LCD_RESX_PIN)
 
+#define LCD_DCX_LOW()                   REG_CLR_BIT(LCD_DCX_PORT->ODR, LCD_DCX_PIN)
+#define LCD_DCX_HIGH()                  REG_SET_BIT(LCD_DCX_PORT->ODR, LCD_DCX_PIN)
+
+#define LCD_CSX_LOW()                   REG_CLR_BIT(LCD_CSX_PORT->ODR, LCD_CSX_PIN)
+#define LCD_CSX_HIGH()                  REG_SET_BIT(LCD_CSX_PORT->ODR, LCD_CSX_PIN)
 
 /*******************************************************************************
 **                      COMMON VARIABLE DEFINITIONS
@@ -31,11 +38,13 @@
 *******************************************************************************/
 static void SystemClock_Config(void);
 static void Error_Handler();
+
+extern const uint8_t t1_320x240_map[]; /* pixel byte array of frame 1 */
+extern const uint8_t t2_320x240_map[]; /* pixel byte array of frame 2 */
+extern const uint8_t t3_320x240_map[]; /* pixel byte array of frame 3 */
 /*******************************************************************************
 **                          FUNCTION DEFINITIONS
 *******************************************************************************/
-
-
 
 int main()
 {
@@ -45,24 +54,11 @@ int main()
     SystemClock_Config();
     // SystemCoreClockUpdate();
     TRACE_INFO("Enter Application\n");
-    lis3dsh_t *lis = lis3dsh_create();
-    lis->init(lis);
-    lis->read(lis, addr, &data);
-    TRACE_INFO("ID : %x \n",data);
-    
+    lcd_init();
+
     while (1)
     {
         /* code */
-        addr = 0x29;
-        lis->read(lis, addr, &data);
-        TRACE_INFO("x : %x \n",data);
-        addr = 0x2B;
-        lis->read(lis, addr, &data);
-        TRACE_INFO("y : %x \n",data);
-        addr = 0x2D;
-        lis->read(lis, addr, &data);
-        TRACE_INFO("z : %x \n",data);
-        HAL_Delay(100);
     }
     
 }
@@ -107,7 +103,7 @@ static void SystemClock_Config(void)
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
     RCC_OscInitStruct.PLL.PLLM = 8;
-    RCC_OscInitStruct.PLL.PLLN = 336;
+    RCC_OscInitStruct.PLL.PLLN = 168;
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
     RCC_OscInitStruct.PLL.PLLQ = 7;
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)

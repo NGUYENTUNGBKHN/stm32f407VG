@@ -44,7 +44,8 @@
         "stm32f4xx_hal_spi.h": "c",
         "disco_bsp.h": "c",
         "stdlib.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "lcd.h": "c"
     },
     "cortex-debug.variableUseNaturalFormat": false
 }

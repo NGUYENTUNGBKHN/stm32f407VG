@@ -98,8 +98,8 @@ static void lis3dsh_init(struct LIS3DSH_S *self)
         self->SpiHandle.Instance = DISCO_SPIx;
         self->SpiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
         self->SpiHandle.Init.Direction = SPI_DIRECTION_2LINES;
-        self->SpiHandle.Init.CLKPhase = SPI_PHASE_1EDGE;
-        self->SpiHandle.Init.CLKPolarity = SPI_POLARITY_LOW;
+        self->SpiHandle.Init.CLKPhase = SPI_PHASE_2EDGE;
+        self->SpiHandle.Init.CLKPolarity = SPI_POLARITY_HIGH;
         self->SpiHandle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
         self->SpiHandle.Init.CRCPolynomial = 10;
         self->SpiHandle.Init.DataSize = SPI_DATASIZE_8BIT;
@@ -147,8 +147,8 @@ static void lis3sh_write(struct LIS3DSH_S *self, uint8_t addr, uint8_t data)
 
 static void lis3dsh_read(struct LIS3DSH_S *self, uint8_t addr, uint8_t *data)
 {
-    uint8_t test = 0;
-    test = addr | 0x80;
+    uint8_t test[2] = {0, 0};
+    test[0] = addr | 0x80;
     lis3dsh_cs_low();
 #if defined(INTER_USE)
     if (HAL_SPI_TransmitReceive_IT(&self->SpiHandle, (uint8_t*) &test, (uint8_t*) data, 1) != HAL_OK)
@@ -158,15 +158,20 @@ static void lis3dsh_read(struct LIS3DSH_S *self, uint8_t addr, uint8_t *data)
     while(HAL_SPI_GetState(&self->SpiHandle) != HAL_SPI_STATE_READY)
     {}
 #else
-    if(HAL_SPI_Transmit(&self->SpiHandle, &test, 1, SpixTimeout) != HAL_OK)
-    {
-        ERROR("SPI send fail.\n");
-    }
+    // if(HAL_SPI_Transmit(&self->SpiHandle, &test, 1, SpixTimeout) != HAL_OK)
+    // {
+    //     ERROR("SPI send fail.\n");
+    // }
 
-    if(HAL_SPI_Receive(&self->SpiHandle, data, 1, SpixTimeout) != HAL_OK)
+    // if(HAL_SPI_Receive(&self->SpiHandle, data, 1, SpixTimeout) != HAL_OK)
+    // {
+    //     ERROR("SPI send fail.\n");
+    // }
+    if (HAL_SPI_Receive(&self->SpiHandle, (uint8_t*) test, 2, SpixTimeout) != HAL_OK)
     {
-        ERROR("SPI send fail.\n");
+        ERROR("SPI received fail.\n");
     }
+    *data = test[1];
 #endif
     lis3dsh_cs_high();
 }

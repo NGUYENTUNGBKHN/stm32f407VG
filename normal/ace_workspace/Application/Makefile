@@ -60,6 +60,7 @@ SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Driver/hal/Src/stm32f4xx_hal_dma.c)
 SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Driver/hal/Src/stm32f4xx_hal_spi.c)
 SRC_INCLUDE+=$(wildcard $(STM32_SDK)/Driver/hal/Src/stm32f4xx_hal_gpio.c)
 SRC_INCLUDE+=$(wildcard $(MID_DIR)/lis3dsh/*.c)
+SRC_INCLUDE+=$(wildcard $(MID_DIR)/lcd/*.c)
 SRC_INCLUDE+=$(wildcard *.s)
 # SRC_INCLUDE+=$(wildcard $(EXTERNAL_DIR)/segger_rtt/*.c)
 # SRC_FILES+=$(wildcard $(OSKERNEL_DIR)/*.s)
@@ -72,6 +73,7 @@ INC_FOLDERS=\
 	$(STM32_SDK)/Device/Include\
 	$(STM32_SDK)/Driver/hal\
 	$(MID_DIR)/lis3dsh\
+	$(MID_DIR)/lcd\
 
 
 LIBS+=

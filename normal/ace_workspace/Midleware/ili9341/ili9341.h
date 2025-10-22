@@ -16,8 +16,10 @@ extern "C"
 
 /* CODE */
 
+#include "lcd.h"
 
 
+extern lcd_drv_t ILI9341_drv;
 
 
 #ifdef __cplusplus

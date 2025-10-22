@@ -77,6 +77,14 @@ typedef struct
     bsp_lcd_dma_err_cb_t dma_err_cb;
 } lcd_t;
 
+typedef struct LCD_DRV_S lcd_drv_t;
+struct LCD_DRV_S
+{
+    void (*init)(lcd_drv_t *self);
+    void (*reset)(lcd_drv_t *self);
+    void (*config)(lcd_drv_t *self);
+};
+
 extern void lcd_init();
 
 #ifdef __cplusplus

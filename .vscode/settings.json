@@ -45,7 +45,8 @@
         "disco_bsp.h": "c",
         "stdlib.h": "c",
         "stdio.h": "c",
-        "lcd.h": "c"
+        "lcd.h": "c",
+        "ili9341.h": "c"
     },
     "cortex-debug.variableUseNaturalFormat": false
 }
